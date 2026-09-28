@@ -1,0 +1,199 @@
+@import "tailwindcss";
+@import "@fontsource-variable/space-grotesk";
+@import "@fontsource-variable/manrope";
+
+/* Design tokens — mirrors stitch_system_design_documentation/DESIGN.md */
+@theme {
+  --font-display: "Space Grotesk Variable", "Space Grotesk", ui-sans-serif, system-ui, sans-serif;
+  --font-sans: "Manrope Variable", "Manrope", ui-sans-serif, system-ui, sans-serif;
+
+  --color-void: #0c0c0c;
+  --color-surface: #131313;
+  --color-card: #161616;
+  --color-card-2: #1e1e1e;
+  --color-lime: #84cc16;
+  --color-lime-bright: #9ee939;
+  --color-ink: #0c0c0c;
+  --color-bone: #f4f2ee;
+  --color-sage: #dde5d5;
+  --color-sage-mid: #9caf88;
+  --color-moss: #1f2a1f;
+  --color-muted: #a1a1aa;
+  --color-muted-2: #71717a;
+  --color-line: rgb(255 255 255 / 0.08);
+  --color-line-strong: rgb(255 255 255 / 0.14);
+
+  --radius-card: 1rem;
+  --shadow-glow: 0 20px 50px rgb(132 204 22 / 0.15);
+}
+
+@layer base {
+  html {
+    overflow-x: clip;
+    scroll-behavior: smooth;
+    -webkit-text-size-adjust: 100%;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    *, *::before, *::after { transition: none !important; animation: none !important; }
+  }
+  /* One-screen-per-scroll mode (src/scripts/fullpage.ts): every section is at least one
+     full screen with its content centred. :where() keeps this weaker than utilities,
+     so a section's own layout (e.g. the hero's bottom-aligned content) still wins. */
+  html.fullpage { scroll-behavior: auto; }
+  html.fullpage :where(main > section) {
+    min-height: 100svh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+  html.fullpage :where(main > section) > :where(.container-x) { width: 100%; }
+  html.fullpage :where(body > footer) { min-height: 100svh; display: flex; flex-direction: column; justify-content: space-between; padding-top: 7rem; }
+
+  body {
+    background: var(--color-void);
+    color: #fff;
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+  }
+  h1, h2, h3, h4 {
+    font-family: var(--font-display);
+    letter-spacing: -0.02em;
+  }
+  ::selection { background: var(--color-lime); color: var(--color-ink); }
+  :focus-visible { outline: 2px solid var(--color-lime); outline-offset: 3px; border-radius: 6px; }
+}
+
+/*
+ * Section themes — add to any <section> to alternate backgrounds like the homepage.
+ * They re-point the design tokens, so utilities inside (text-white, text-muted,
+ * border-line, .card …) adapt automatically.
+ */
+@layer utilities {
+  /* ── Light themes: cream (theme-light) and sage (theme-sage) ── */
+  .theme-light, .theme-sage {
+    --color-white: #0c0c0c;          /* text-white → ink */
+    --color-muted: #52525b;
+    --color-muted-2: #71717a;
+    --color-line: rgb(12 12 12 / 0.1);
+    --color-line-strong: rgb(12 12 12 / 0.18);
+    --color-card: #ffffff;
+    --accent-dark: #4d7c0f;          /* readable lime on light backgrounds */
+    background-color: var(--color-bone);
+    color: var(--color-ink);
+  }
+  .theme-sage {
+    --color-muted: #475446;
+    --color-muted-2: #5f6d5c;
+    --color-line: rgb(31 42 31 / 0.14);
+    --color-card: #f4f7f1;
+    --accent-dark: #3f6212;
+    background-color: var(--color-sage);
+  }
+  :is(.theme-light, .theme-sage) .card { box-shadow: 0 1px 2px rgb(12 12 12 / 0.04), 0 8px 24px -12px rgb(12 12 12 / 0.08); }
+  :is(.theme-light, .theme-sage) :is(.eyebrow, .text-lime, .hover\:text-lime:hover),
+  :is(.theme-light, .theme-sage) .group:hover .group-hover\:text-lime { color: var(--accent-dark); }
+  :is(.theme-light, .theme-sage) .btn-ghost { background: #fff; color: var(--color-ink); border-color: rgb(12 12 12 / 0.15); }
+  :is(.theme-light, .theme-sage) .btn-ghost:hover { border-color: var(--accent-dark); }
+  :is(.theme-light, .theme-sage) .wordmark { background-image: linear-gradient(180deg, rgb(12 12 12 / 0.16) 0%, rgb(12 12 12 / 0.03) 100%); }
+  :is(.theme-light, .theme-sage) .prose-dark { color: #3f3f46; }
+  :is(.theme-light, .theme-sage) .prose-dark :is(h2, h3, strong) { color: var(--color-ink); }
+  :is(.theme-light, .theme-sage) .prose-dark a { color: var(--accent-dark); }
+
+  /* ── Dark themes: navy (business cards) and moss (deep sage) ── */
+  .theme-navy, .theme-moss {
+    --color-card: rgb(255 255 255 / 0.045);
+    --color-line: rgb(255 255 255 / 0.1);
+    background-color: #0b1626;
+  }
+  .theme-moss {
+    --color-muted: #b3bfae;
+    --color-muted-2: #8a9885;
+    --color-card: rgb(220 232 210 / 0.06);
+    --color-line: rgb(220 232 210 / 0.12);
+    background-color: var(--color-moss);
+  }
+}
+
+@layer components {
+  .container-x { width: 100%; max-width: 1440px; margin-inline: auto; padding-inline: 1.25rem; }
+  @media (min-width: 768px) { .container-x { padding-inline: 3rem; } }
+  @media (min-width: 1280px) { .container-x { padding-inline: 5rem; } }
+
+  .section { padding-block: 4.5rem; }
+  @media (min-width: 1024px) { .section { padding-block: 6rem; } }
+  /* Short laptop screens: tighter so each section still fits one screen */
+  @media (min-width: 1024px) and (max-height: 820px) { .section { padding-block: 3.5rem; } }
+
+  .eyebrow {
+    font-family: var(--font-display);
+    font-size: 11px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase;
+    color: var(--color-lime);
+  }
+
+  /* Monumental wordmark used in hero + footer (LIVINOR-style) */
+  .wordmark {
+    font-family: var(--font-display);
+    font-weight: 700;
+    line-height: 0.8;
+    letter-spacing: -0.05em;
+    text-transform: uppercase;
+    white-space: nowrap;
+    background: linear-gradient(180deg, rgb(255 255 255 / 0.95) 0%, rgb(255 255 255 / 0.35) 70%, rgb(255 255 255 / 0.05) 100%);
+    -webkit-background-clip: text; background-clip: text;
+    color: transparent;
+    user-select: none;
+  }
+
+  /* Image that scales with the screen height so full-screen sections feel filled */
+  .screen-img {
+    width: 100%;
+    object-fit: cover;
+    aspect-ratio: 4 / 3;
+  }
+  @media (min-width: 768px) {
+    .screen-img { aspect-ratio: auto; height: clamp(320px, 64svh, 760px); }
+  }
+
+  .card {
+    background: var(--color-card);
+    border: 1px solid var(--color-line);
+    border-radius: var(--radius-card);
+  }
+
+  .btn {
+    display: inline-flex; align-items: center; gap: 0.625rem;
+    border-radius: 9999px;
+    font-family: var(--font-display); font-weight: 600; font-size: 0.875rem;
+    padding: 0.5rem 0.5rem 0.5rem 1.25rem;
+    transition: background-color .25s, border-color .25s, transform .25s, box-shadow .25s;
+  }
+  .btn-primary { background: var(--color-lime); color: var(--color-ink); }
+  .btn-primary:hover { background: var(--color-lime-bright); box-shadow: var(--shadow-glow); }
+  .btn-ghost { background: rgb(255 255 255 / 0.06); color: #fff; border: 1px solid rgb(255 255 255 / 0.15); }
+  .btn-ghost:hover { border-color: var(--color-lime); }
+  .btn-dark { background: var(--color-ink); color: #fff; }
+  .btn-dark:hover { background: #262626; }
+  .btn .arrow {
+    display: grid; place-items: center;
+    width: 1.75rem; height: 1.75rem; border-radius: 9999px;
+    background: rgb(0 0 0 / 0.14);
+    transition: transform .25s;
+  }
+  .btn-ghost .arrow, .btn-dark .arrow { background: var(--color-lime); color: var(--color-ink); }
+  .btn:hover .arrow { transform: rotate(45deg); }
+
+  /* Long-form legal / article text */
+  .prose-dark { color: #d4d4d8; font-size: 1rem; line-height: 1.75; max-width: 72ch; }
+  .prose-dark h2 { color: #fff; font-size: 1.5rem; font-weight: 600; margin: 2.5rem 0 0.75rem; }
+  .prose-dark h3 { color: #fff; font-size: 1.125rem; font-weight: 600; margin: 1.75rem 0 0.5rem; }
+  .prose-dark p { margin: 0 0 1rem; }
+  .prose-dark ul { list-style: disc; padding-left: 1.25rem; margin: 0 0 1rem; }
+  .prose-dark li { margin-bottom: 0.375rem; }
+  .prose-dark a { color: var(--color-lime); text-decoration: underline; text-underline-offset: 3px; }
+  /* Larger reading size for full-screen sections */
+  .prose-lg { font-size: 1.0625rem; }
+  @media (min-width: 1024px) { .prose-lg { font-size: 1.1875rem; line-height: 1.7; } }
+  .prose-lg h2 { font-size: clamp(1.75rem, 2.8vw, 2.75rem); line-height: 1.1; letter-spacing: -0.02em; }
+}

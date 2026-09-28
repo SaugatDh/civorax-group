@@ -1,0 +1,96 @@
+---
+import { Image } from 'astro:assets';
+import Base from '../../layouts/Base.astro';
+import PageHero from '../../components/PageHero.astro';
+import Button from '../../components/Button.astro';
+import Icon from '../../components/Icon.astro';
+import CompanyContact from '../../components/CompanyContact.astro';
+import { SITE, COMPANIES, PROJECTS, type Company } from '../../data/site';
+import { IMAGES } from '../../data/images';
+import { breadcrumbs, companyServicesSchema } from '../../data/schema';
+
+export function getStaticPaths() {
+  return COMPANIES.map((company) => ({ params: { slug: company.slug }, props: { company } }));
+}
+
+const { company } = Astro.props as { company: Company };
+const projects = PROJECTS.filter((p) => p.company === company.slug);
+const crumbs = [
+  { name: 'Companies', path: '/companies' },
+  { name: company.name, path: `/companies/${company.slug}` },
+];
+const title = company.seoTitle;
+const description = `${company.name} services: ${company.services.map((s) => s.title).join(', ')}. Itahari, Nepal — a Civorax Group company.`;
+---
+
+<Base title={title} description={description} image={company.image} imageAlt={company.imageAlt} schema={[breadcrumbs(crumbs), companyServicesSchema(company)]}>
+  <PageHero eyebrow={`A Civorax Group company · ${SITE.tagline}`} title={company.name} lead={company.motto} crumbs={crumbs} image={company.image} imageAlt={company.imageAlt}>
+    <div class="mt-8 flex flex-wrap gap-3">
+      <Button href={company.url} external>Visit {company.domain}</Button>
+      <Button href={`tel:${company.phones[0].e164}`} variant="ghost">Call {company.phones[0].display}</Button>
+    </div>
+  </PageHero>
+
+  <section class="section theme-sage">
+    <div class="container-x grid gap-12 md:grid-cols-12 md:items-center">
+      <div class="md:col-span-6">
+        <Image src={IMAGES['design-studio']} alt={`The ${company.name} team at work`} widths={[640, 960, 1280]} sizes="(min-width:768px) 50vw, 100vw" class="screen-img rounded-2xl" />
+      </div>
+      <div class="md:col-span-6">
+        <p class="eyebrow mb-4">About {company.name}</p>
+        <h2 class="text-[clamp(2.25rem,4.2vw,4.25rem)] font-medium leading-[1.04] tracking-tight text-white">{company.tagline}</h2>
+        <p class="mt-6 text-lg leading-relaxed text-muted lg:text-xl">{company.description}</p>
+        <p class="mt-5 text-base leading-relaxed text-muted lg:text-lg">
+          Full portfolio and pricing on the official website,
+          <a class="text-lime underline underline-offset-4" href={company.url} rel="noopener">{company.domain}</a>.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="services-heading">
+    <div class="container-x">
+      <p class="eyebrow mb-3">Our services</p>
+      <h2 id="services-heading" class="text-[clamp(2rem,3.8vw,3.75rem)] font-medium leading-[1.06] tracking-tight text-white">What {company.name} does</h2>
+      <ul class="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        {company.services.map((s, i) => (
+          <li class="card group flex min-h-[180px] flex-col gap-6 justify-between p-7 transition-colors md:min-h-[clamp(200px,27svh,320px)] md:p-9 hover:border-lime/40">
+            <div class="flex items-center justify-between">
+              <span class="grid h-14 w-14 place-items-center rounded-full bg-lime/10 text-lime"><Icon name={s.icon as 'code'} size={26} /></span>
+              <span class="font-display text-sm font-semibold text-muted-2">0{i + 1}</span>
+            </div>
+            <div>
+              <h3 class="text-xl font-medium text-white lg:text-2xl">{s.title}</h3>
+              <p class="mt-2 text-[15px] leading-relaxed text-muted">{s.text}</p>
+            </div>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <section class="section theme-moss" aria-label={`Contact ${company.name}`}>
+    <div class="container-x">
+      <CompanyContact company={company} />
+
+      {projects.length > 0 && (
+        <>
+          <h2 class="mt-20 text-3xl font-medium tracking-tight text-white md:text-4xl">Selected projects</h2>
+          <ul class="mt-8 grid gap-5 md:grid-cols-2">
+            {projects.map((p) => (
+              <li>
+                <a href={`/projects/${p.slug}`} class="group card flex items-center justify-between gap-4 p-6 hover:border-lime/50">
+                  <span>
+                    <span class="block text-xs text-muted-2">{p.category} · {p.location}</span>
+                    <span class="mt-1 block text-lg font-medium text-white group-hover:text-lime">{p.title}</span>
+                  </span>
+                  <Icon name="arrow-up-right" class="text-lime" />
+                </a>
+              </li>
+            ))}
+          </ul>
+        </>
+      )}
+    </div>
+  </section>
+</Base>

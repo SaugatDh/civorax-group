@@ -1,0 +1,145 @@
+---
+// Payoneer-style "built for trust" band: dotted WebGL globe (cobe, ~5 KB) centred on Nepal,
+// with markers + arcs from the Itahari HQ to one city in each of the 7 provinces.
+// The globe is decorative (aria-hidden); the stats are plain HTML so search engines read them.
+import { STATS } from '../data/site';
+
+interface Props { eyebrow?: string; title?: string; lead?: string }
+const {
+  eyebrow = 'Built across Nepal',
+  title = 'The team behind your next build',
+  lead = 'Engineers, architects and developers delivering software and structures in every province, from our head office in Itahari.',
+} = Astro.props;
+---
+
+<section id="network" class="relative isolate overflow-hidden bg-[#0f0f10] py-20 lg:py-24" aria-labelledby="network-heading">
+  <!-- Globe -->
+  <!-- Canvas is oversized and pushed past the top-right corner; Nepal (globe centre) lands in the empty area above the stats -->
+  <div aria-hidden="true" class="pointer-events-none absolute -right-[420px] -top-[330px] -z-10 aspect-square w-[860px] md:-right-[380px] md:-top-[420px] md:w-[1100px] lg:-right-[300px] lg:-top-[470px] lg:w-[1300px]">
+    <canvas
+      data-globe
+      class="pointer-events-auto h-full w-full cursor-grab opacity-0 transition-opacity duration-1000 active:cursor-grabbing"
+    ></canvas>
+  </div>
+  <div aria-hidden="true" class="absolute inset-0 -z-10 bg-gradient-to-r from-[#0f0f10] via-[#0f0f10]/70 to-transparent lg:via-transparent"></div>
+
+  <div class="container-x">
+    <div class="max-w-xl">
+      <p class="eyebrow mb-4">{eyebrow}</p>
+      <h2 id="network-heading" class="text-4xl font-medium leading-[1.1] tracking-tight text-white md:text-5xl">{title}</h2>
+      <p class="mt-5 text-base leading-relaxed text-muted md:text-lg">{lead}</p>
+    </div>
+
+    <dl class="mt-12 grid grid-cols-2 overflow-hidden rounded-2xl border border-line bg-[rgb(12_12_12/0.72)] shadow-[0_30px_80px_-20px_rgb(132_204_22/0.18)] backdrop-blur-md md:mt-16 lg:grid-cols-4">
+      {STATS.map((s, i) => (
+        <div class:list={[
+          'flex flex-col-reverse items-center gap-3 px-4 py-9 text-center md:py-11',
+          i % 2 === 1 && 'border-l border-line',
+          i >= 2 && 'border-t border-line lg:border-t-0',
+          i === 2 && 'lg:border-l',
+        ]}>
+          <dt class="min-h-[2.5rem] max-w-[12rem] text-sm leading-snug text-white/85">{s.text}</dt>
+          <dd class="font-display text-5xl font-light tracking-tight text-lime md:text-6xl">{s.value}</dd>
+        </div>
+      ))}
+    </dl>
+  </div>
+</section>
+
+<script>
+  import createGlobe from 'cobe';
+
+  // One city per province, all connected back to the Itahari head office.
+  const HQ: [number, number] = [26.6646, 87.2718];
+  const CITIES: [number, number][] = [
+    [27.7172, 85.324],  // Kathmandu — Bagmati
+    [28.2096, 83.9856], // Pokhara — Gandaki
+    [26.7288, 85.9263], // Janakpur — Madhesh
+    [27.7006, 83.4484], // Butwal — Lumbini
+    [28.6019, 81.6339], // Birendranagar — Karnali
+    [28.6833, 80.6],    // Dhangadhi — Sudurpashchim
+  ];
+  const NEARBY: [number, number][] = [
+    [26.8125, 87.2833], // Dharan
+    [26.4525, 87.2718], // Biratnagar
+  ];
+
+  // Angles that put a lat/lng at the centre of the visible hemisphere.
+  const NEPAL_PHI = Math.PI - ((84.1 * Math.PI) / 180 - Math.PI / 2);
+  const THETA = 0.42;
+
+  function mount(canvas: HTMLCanvasElement) {
+    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const dpr = Math.min(window.devicePixelRatio || 1, 2);
+    let size = canvas.offsetWidth;
+    let t = 0;
+    let drag = 0;
+    let pointerX: number | null = null;
+    let visible = true;
+    let frame = 0;
+
+    const globe = createGlobe(canvas, {
+      devicePixelRatio: dpr,
+      width: size * dpr,
+      height: size * dpr,
+      phi: NEPAL_PHI,
+      theta: THETA,
+      dark: 1,
+      diffuse: 1.4,
+      scale: 1,
+      mapSamples: 22000,
+      mapBrightness: 4.5,
+      mapBaseBrightness: 0.02,
+      baseColor: [0.22, 0.22, 0.24],
+      markerColor: [0.52, 0.8, 0.09],
+      glowColor: [0.16, 0.2, 0.1],
+      opacity: 0.9,
+      markers: [
+        { location: HQ, size: 0.022 },
+        ...CITIES.map((location) => ({ location, size: 0.012 })),
+        ...NEARBY.map((location) => ({ location, size: 0.008 })),
+      ],
+      arcs: CITIES.map((to) => ({ from: HQ, to })),
+      arcColor: [0.62, 0.91, 0.22],
+      arcWidth: 0.9,
+      arcHeight: 0.12,
+      markerElevation: 0.01,
+    });
+
+    const render = () => {
+      if (!reduced && pointerX === null) t += 0.004;
+      // Gentle sway around Nepal so the network never rotates out of view.
+      globe.update({ phi: NEPAL_PHI + Math.sin(t) * 0.55 + drag, theta: THETA });
+      if (visible) frame = requestAnimationFrame(render);
+    };
+
+    new IntersectionObserver(([entry]) => {
+      visible = entry.isIntersecting;
+      cancelAnimationFrame(frame);
+      if (visible) frame = requestAnimationFrame(render);
+    }).observe(canvas);
+
+    new ResizeObserver(() => {
+      size = canvas.offsetWidth;
+      globe.update({ width: size * dpr, height: size * dpr });
+    }).observe(canvas);
+
+    canvas.addEventListener('pointerdown', (e) => { pointerX = e.clientX - drag * 300; canvas.setPointerCapture(e.pointerId); });
+    canvas.addEventListener('pointermove', (e) => { if (pointerX !== null) drag = Math.max(-1.2, Math.min(1.2, (e.clientX - pointerX) / 300)); });
+    const release = () => { pointerX = null; };
+    canvas.addEventListener('pointerup', release);
+    canvas.addEventListener('pointercancel', release);
+
+    requestAnimationFrame(() => { canvas.style.opacity = '1'; });
+  }
+
+  // Only create the WebGL context when the section is about to scroll into view.
+  document.querySelectorAll<HTMLCanvasElement>('canvas[data-globe]').forEach((canvas) => {
+    const io = new IntersectionObserver(([entry]) => {
+      if (!entry.isIntersecting) return;
+      io.disconnect();
+      try { mount(canvas); } catch { /* no WebGL — the section still reads fine without the globe */ }
+    }, { rootMargin: '300px' });
+    io.observe(canvas);
+  });
+</script>

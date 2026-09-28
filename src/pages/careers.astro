@@ -1,0 +1,67 @@
+---
+import Base from '../layouts/Base.astro';
+import PageHero from '../components/PageHero.astro';
+import Button from '../components/Button.astro';
+import Icon from '../components/Icon.astro';
+import { SITE } from '../data/site';
+import { breadcrumbs } from '../data/schema';
+
+const title = 'Careers at Civorax Group | Jobs in Itahari, Nepal';
+const description = 'Join Civorax Group in Itahari — careers for software developers, architects, civil and structural engineers, and site supervisors across CivoraX Tech and CivoraX Infra.';
+const crumbs = [{ name: 'Careers', path: '/careers' }];
+
+// Add real openings here. Each one will also need JobPosting structured data to appear in Google Jobs.
+const roles = [
+  { team: 'CivoraX Tech', title: 'Software developers', text: 'Laravel, React / Next.js and mobile engineers who care about fast, reliable products.' },
+  { team: 'CivoraX Infra', title: 'Architects & civil engineers', text: 'Designers and engineers who want to see their drawings built.' },
+  { team: 'CivoraX Infra', title: 'Site supervisors', text: 'Experienced supervisors to run safe, on-schedule construction sites.' },
+  { team: 'Group', title: 'Sales & client success', text: 'People who can explain what we build and make clients successful after handover.' },
+];
+
+const perks = [
+  { icon: 'building', title: 'Real projects from week one', text: 'Work on live buildings and software for real clients — not practice tasks.' },
+  { icon: 'grad', title: 'Mentorship', text: 'Learn alongside senior architects, engineers and developers who review your work.' },
+  { icon: 'pin', title: 'Itahari, across Nepal', text: 'Based in Itahari, with projects and site visits across all seven provinces.' },
+] as const;
+---
+
+<Base title={title} description={description} image="design-studio" schema={[breadcrumbs(crumbs)]}>
+  <PageHero eyebrow="Careers" title="Build what moves Nepal forward — with us" lead="We hire people who like hard problems and finishing what they start. No current opening that fits? Send us your CV anyway." crumbs={crumbs} image="design-studio" imageAlt="Team members working in the Civorax Group studio">
+    <div class="mt-8"><Button href={`mailto:${SITE.email}?subject=Career%20application`}>Send your CV</Button></div>
+  </PageHero>
+
+  <section class="section theme-sage">
+    <div class="container-x">
+      <p class="eyebrow mb-4">Open roles</p><h2 class="text-[clamp(2rem,3.8vw,3.75rem)] font-medium leading-[1.06] tracking-tight text-white">Who we’re looking for</h2>
+      <ul class="mt-10 border-t border-line">
+        {roles.map((r) => (
+          <li class="grid gap-2 border-b border-line py-6 md:grid-cols-12 md:items-center lg:py-7">
+            <span class="text-sm uppercase tracking-[0.08em] text-lime md:col-span-3">{r.team}</span>
+            <h3 class="text-xl font-medium text-white md:col-span-4 lg:text-2xl">{r.title}</h3>
+            <p class="text-base text-muted md:col-span-5">{r.text}</p>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <section class="section theme-moss" aria-labelledby="why-work-heading">
+    <div class="container-x">
+      <p class="eyebrow mb-4">Life at Civorax</p>
+      <h2 id="why-work-heading" class="max-w-4xl text-[clamp(2rem,3.8vw,3.75rem)] font-medium leading-[1.06] tracking-tight text-white">Why work with us</h2>
+      <ol class="mt-12 grid gap-4 md:grid-cols-3">
+        {perks.map((p, i) => (
+          <li class="card flex min-h-[220px] flex-col justify-between p-8 md:min-h-[clamp(260px,40svh,420px)] md:p-10">
+            <span class="grid h-14 w-14 place-items-center rounded-full bg-lime/15 text-lime"><Icon name={p.icon} size={26} /></span>
+            <div>
+              <span class="font-display text-sm text-muted-2">0{i + 1}</span>
+              <h3 class="mt-2 text-2xl font-medium text-white lg:text-3xl">{p.title}</h3>
+              <p class="mt-3 text-[15px] leading-relaxed text-muted lg:text-base">{p.text}</p>
+            </div>
+          </li>
+        ))}
+      </ol>
+      <div class="mt-10"><Button href={`mailto:${SITE.email}?subject=Career%20application`}>Send your CV</Button></div>
+    </div>
+  </section>
+</Base>

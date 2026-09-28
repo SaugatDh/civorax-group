@@ -1,0 +1,86 @@
+---
+import { Image, getImage } from 'astro:assets';
+import Base from '../../layouts/Base.astro';
+import PageHero from '../../components/PageHero.astro';
+import Button from '../../components/Button.astro';
+import { SITE, PROJECTS, COMPANIES, type Project } from '../../data/site';
+import { IMAGES } from '../../data/images';
+import { breadcrumbs, projectSchema } from '../../data/schema';
+
+export function getStaticPaths() {
+  return PROJECTS.map((project) => ({ params: { slug: project.slug }, props: { project } }));
+}
+
+const { project } = Astro.props as { project: Project };
+const company = COMPANIES.find((c) => c.slug === project.company)!;
+const others = PROJECTS.filter((p) => p.slug !== project.slug);
+const crumbs = [
+  { name: 'Projects', path: '/projects' },
+  { name: project.title, path: `/projects/${project.slug}` },
+];
+const img = await getImage({ src: IMAGES[project.image], width: 1200, format: 'jpg' });
+const title = `${project.title} | ${company.name} Project`;
+const description = `${project.summary} Delivered by ${company.name}, a Civorax Group company, in ${project.location}, Nepal.`;
+---
+
+<Base title={title} description={description} type="article" image={project.image} imageAlt={project.imageAlt} schema={[breadcrumbs(crumbs), projectSchema(project, new URL(img.src, SITE.url).href)]}>
+  <PageHero eyebrow={`${project.category} · ${project.location}`} title={project.title} lead={project.summary} crumbs={crumbs} image={project.image} imageAlt={project.imageAlt} />
+
+  <!-- Overview (light) -->
+  <section class="section theme-light">
+    <div class="container-x grid gap-12 md:grid-cols-12 md:items-center">
+      <article class="prose-dark prose-lg md:col-span-7">
+        <p class="eyebrow mb-4">Overview</p>
+        <h2 class="!mt-0">{project.summary}</h2>
+        {project.body.map((p) => <p>{p}</p>)}
+      </article>
+      <aside class="md:col-span-5">
+        <dl class="card divide-y divide-white/10 text-base">
+          <div class="flex justify-between gap-4 p-6"><dt class="text-muted">Company</dt><dd><a class="text-lime" href={`/companies/${company.slug}`}>{company.name}</a></dd></div>
+          <div class="flex justify-between gap-4 p-6"><dt class="text-muted">Location</dt><dd class="text-white">{project.location}</dd></div>
+          <div class="flex justify-between gap-4 p-6"><dt class="text-muted">Type</dt><dd class="text-white">{project.category}</dd></div>
+          <div class="flex justify-between gap-4 p-6"><dt class="text-muted">Year</dt><dd class="text-white">{project.year}</dd></div>
+        </dl>
+      </aside>
+    </div>
+  </section>
+
+  <!-- Results (dark) -->
+  <section class="section" aria-labelledby="results-heading">
+    <div class="container-x">
+      <p class="eyebrow mb-4">Results</p>
+      <h2 id="results-heading" class="text-[clamp(2rem,3.8vw,3.75rem)] font-medium leading-[1.06] tracking-tight text-white">What the project delivered</h2>
+      <dl class="mt-12 grid grid-cols-1 gap-4 sm:grid-cols-3">
+        {project.results.map((r) => (
+          <div class="card flex min-h-[200px] flex-col-reverse justify-between gap-4 p-8 md:min-h-[clamp(220px,34svh,380px)] md:p-10">
+            <dt class="text-sm uppercase tracking-[0.08em] text-muted">{r.label}</dt>
+            <dd class="font-display text-[clamp(3rem,6vw,6rem)] font-semibold leading-none tracking-tight text-lime">{r.value}</dd>
+          </div>
+        ))}
+      </dl>
+      <div class="mt-10"><Button href="/contact">Start a similar project</Button></div>
+    </div>
+  </section>
+
+  <section class="section theme-sage">
+    <div class="container-x">
+      <div class="flex items-end justify-between gap-6">
+        <h2 class="text-3xl font-medium tracking-tight text-white md:text-5xl">More projects</h2>
+        <Button href="/projects" variant="ghost">All projects</Button>
+      </div>
+      <ul class="mt-10 grid gap-5 md:grid-cols-2">
+        {others.map((p) => (
+          <li>
+            <a href={`/projects/${p.slug}`} class="group block">
+              <div class="overflow-hidden rounded-2xl">
+                <Image src={IMAGES[p.image]} alt={p.imageAlt} widths={[640, 960]} sizes="(min-width:768px) 50vw, 100vw" class="aspect-[4/3] w-full object-cover transition-transform duration-700 group-hover:scale-105 md:aspect-auto md:h-[clamp(240px,48svh,560px)]" />
+              </div>
+              <p class="mt-4 text-xs text-muted-2">{p.category} · {p.location}</p>
+              <h3 class="mt-1 text-xl font-medium text-white group-hover:text-lime">{p.title}</h3>
+            </a>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+</Base>

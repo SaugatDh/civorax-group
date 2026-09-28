@@ -1,0 +1,78 @@
+---
+import Logo from './Logo.astro';
+import Icon from './Icon.astro';
+import Button from './Button.astro';
+import { SITE, NAV, COMPANIES } from '../data/site';
+
+const year = new Date().getFullYear();
+---
+
+<footer class="relative overflow-hidden border-t border-line bg-void pt-20" aria-labelledby="footer-heading">
+  <h2 id="footer-heading" class="sr-only">Civorax Group — site footer</h2>
+  <div class="container-x relative z-10">
+    <div class="grid gap-12 pb-12 md:grid-cols-12">
+      <div class="md:col-span-5">
+        <p class="font-display text-[clamp(2.25rem,4.4vw,4.5rem)] font-medium leading-[1.04] tracking-tight text-white">Stay connected<br />with us</p>
+        <p class="mt-4 max-w-sm text-sm leading-relaxed text-muted">
+          {SITE.name} is the parent company of CivoraX Tech and CivoraX Infra, building software and buildings for Nepal from our head office in Itahari.
+        </p>
+        <Button href="/contact" class="mt-7">Contact us</Button>
+      </div>
+
+      <nav aria-label="Footer" class="md:col-span-2">
+        <p class="eyebrow mb-4 !text-white/50">Explore</p>
+        <ul class="space-y-2.5 text-sm text-white/75">
+          {NAV.map((n) => <li><a class="hover:text-lime" href={n.href}>{n.label}</a></li>)}
+        </ul>
+      </nav>
+
+      <div class="md:col-span-2">
+        <p class="eyebrow mb-4 !text-white/50">Our companies</p>
+        <ul class="space-y-2.5 text-sm text-white/75">
+          {COMPANIES.map((c) => (
+            <>
+              <li><a class="hover:text-lime" href={`/companies/${c.slug}`}>{c.name}</a></li>
+              <li><a class="inline-flex items-center gap-1 text-white/45 hover:text-lime" href={c.url} rel="noopener">{c.domain}<Icon name="arrow-up-right" size={12} /></a></li>
+            </>
+          ))}
+        </ul>
+      </div>
+
+      <address class="not-italic md:col-span-3">
+        <p class="eyebrow mb-4 !text-white/50">Head office</p>
+        <ul class="space-y-3 text-sm text-white/75">
+          <li class="flex gap-3"><Icon name="pin" class="mt-0.5 shrink-0 text-lime" />{SITE.address.street}, {SITE.address.district}, {SITE.address.region}, {SITE.address.countryName}</li>
+          <li class="flex gap-3"><Icon name="phone" class="mt-0.5 shrink-0 text-lime" /><a class="hover:text-lime" href={SITE.phoneHref}>{SITE.phoneDisplay}</a></li>
+          <li class="flex gap-3"><Icon name="mail" class="mt-0.5 shrink-0 text-lime" /><a class="hover:text-lime" href={`mailto:${SITE.email}`}>{SITE.email}</a></li>
+          <li class="flex gap-3"><Icon name="clock" class="mt-0.5 shrink-0 text-lime" />{SITE.hours.display}</li>
+        </ul>
+      </address>
+    </div>
+  </div>
+
+  <!-- Monumental wordmark (decorative) -->
+  <div aria-hidden="true" class="pointer-events-none relative -mb-[2vw] select-none text-center">
+    <span class="wordmark block text-[19vw]">Civorax</span>
+  </div>
+
+  <div class="relative z-10 border-t border-line bg-void">
+    <div class="container-x flex flex-col items-center justify-between gap-4 py-6 text-xs text-muted-2 md:flex-row">
+      <p>© {SITE.foundingYear}–{year} {SITE.name}. All rights reserved.</p>
+      <ul class="flex items-center gap-5">
+        <li><a class="hover:text-white" href="/privacy-policy">Privacy policy</a></li>
+        <li><a class="hover:text-white" href="/terms">Terms</a></li>
+        <li><a class="hover:text-white" href="/sitemap-index.xml">Sitemap</a></li>
+      </ul>
+      <ul class="flex items-center gap-2">
+        {SITE.social.filter((s) => s.href).map((s) => (
+          <li>
+            <a href={s.href} rel="noopener me" target="_blank" aria-label={`${SITE.name} on ${s.label}`}
+               class="grid h-9 w-9 place-items-center rounded-full border border-line text-white/70 hover:border-lime hover:text-lime">
+              <Icon name={s.icon as 'facebook'} size={15} />
+            </a>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </div>
+</footer>

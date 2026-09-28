@@ -1,0 +1,51 @@
+---
+// Inner-page hero in the LIVINOR style: full-bleed photo, dark gradient for legibility,
+// breadcrumbs + H1 anchored to the bottom-left.
+import { Picture } from 'astro:assets';
+import { IMAGES } from '../data/images';
+
+interface Props {
+  eyebrow: string;
+  title: string;
+  lead?: string;
+  crumbs: { name: string; path: string }[];
+  image?: keyof typeof IMAGES;
+  imageAlt?: string;
+}
+const { eyebrow, title, lead, crumbs, image = 'tower', imageAlt = '' } = Astro.props;
+const trail = [{ name: 'Home', path: '/' }, ...crumbs];
+---
+
+<section class="relative isolate flex min-h-[100svh] flex-col justify-end overflow-hidden pb-14 pt-32 md:pb-20">
+  <Picture
+    src={IMAGES[image]}
+    alt={imageAlt}
+    formats={['avif', 'webp']}
+    widths={[640, 1024, 1600, 2400]}
+    sizes="100vw"
+    loading="eager"
+    fetchpriority="high"
+    class="h-full w-full object-cover"
+    pictureAttributes={{ class: 'absolute inset-0 -z-20 h-full w-full' }}
+  />
+  <div aria-hidden="true" class="absolute inset-0 -z-10 bg-gradient-to-b from-void/75 via-void/35 to-void"></div>
+  <div aria-hidden="true" class="absolute inset-0 -z-10 bg-gradient-to-r from-void/70 via-void/20 to-transparent"></div>
+
+  <div class="container-x relative">
+    <nav aria-label="Breadcrumb" class="mb-6">
+      <ol class="flex flex-wrap items-center gap-2 text-xs text-white/60">
+        {trail.map((c, i) => (
+          <li class="flex items-center gap-2">
+            {i < trail.length - 1
+              ? <><a class="hover:text-white" href={c.path}>{c.name}</a><span aria-hidden="true">/</span></>
+              : <span aria-current="page" class="text-white">{c.name}</span>}
+          </li>
+        ))}
+      </ol>
+    </nav>
+    <p class="eyebrow mb-4">{eyebrow}</p>
+    <h1 class="max-w-4xl text-4xl font-semibold leading-[1.05] tracking-tight text-white md:text-6xl lg:text-7xl">{title}</h1>
+    {lead && <p class="mt-6 max-w-2xl text-base leading-relaxed text-white/80 md:text-lg">{lead}</p>}
+    <slot />
+  </div>
+</section>

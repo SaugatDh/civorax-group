@@ -1,0 +1,32 @@
+---
+import Base from '../layouts/Base.astro';
+import PageHero from '../components/PageHero.astro';
+import { SITE } from '../data/site';
+import { breadcrumbs } from '../data/schema';
+
+const crumbs = [{ name: 'Privacy policy', path: '/privacy-policy' }];
+---
+
+<Base title="Privacy Policy | Civorax Group" description="How Civorax Group collects, uses and protects personal information submitted through civoraxgroup.com." schema={[breadcrumbs(crumbs)]}>
+  <PageHero eyebrow="Legal" title="Privacy policy" crumbs={crumbs} />
+  <section class="section theme-light">
+    <div class="container-x prose-dark prose-lg">
+      <p><em>Last updated: September 2026.</em> This template must be reviewed by your legal advisor before launch.</p>
+      <h2>Who we are</h2>
+      <p>{SITE.name}, {SITE.address.city}, {SITE.address.district}, {SITE.address.region}, {SITE.address.countryName}. Contact: <a href={`mailto:${SITE.email}`}>{SITE.email}</a>.</p>
+      <h2>What we collect</h2>
+      <p>When you contact us we collect the details you choose to send — typically your name, phone number, email address and project information. Our hosting provider records standard server logs (IP address, browser, pages requested) for security.</p>
+      <h2>How we use it</h2>
+      <ul>
+        <li>To reply to your enquiry and prepare quotations.</li>
+        <li>To deliver and support projects you engage us for.</li>
+        <li>To keep the website secure and working.</li>
+      </ul>
+      <p>We do not sell personal information. We share it with CivoraX Tech or CivoraX Infra only when needed to answer your enquiry.</p>
+      <h2>How long we keep it</h2>
+      <p>Enquiries are kept for up to two years; project records for as long as the law requires.</p>
+      <h2>Your rights</h2>
+      <p>You can ask us to show, correct or delete your personal information by emailing <a href={`mailto:${SITE.email}`}>{SITE.email}</a>.</p>
+    </div>
+  </section>
+</Base>

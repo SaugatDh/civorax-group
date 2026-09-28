@@ -1,0 +1,288 @@
+---
+import { Picture, Image } from 'astro:assets';
+import Base from '../layouts/Base.astro';
+import Button from '../components/Button.astro';
+import Icon from '../components/Icon.astro';
+import NetworkGlobe from '../components/NetworkGlobe.astro';
+import { SITE, COMPANIES, PROJECTS, PROCESS, SERVICES_INDEX, FAQ } from '../data/site';
+import { IMAGES } from '../data/images';
+import { faqSchema } from '../data/schema';
+
+const [tech, infra] = COMPANIES;
+const heroImg = IMAGES.tower;
+
+const title = 'Civorax Group | Software & Construction Company in Nepal';
+const description =
+  'Civorax Group is the parent company of CivoraX Tech (POS, ERP & software) and CivoraX Infra (architecture & construction). Head office in Itahari, Koshi Province, Nepal.';
+---
+
+<Base title={title} description={description} image="tower" imageAlt="Civorax Group — software and construction in Nepal" schema={[faqSchema()]}>
+
+  <!-- ─────────────── HERO ─────────────── -->
+  <section class="relative isolate flex h-[100svh] max-h-[1000px] min-h-[620px] flex-col justify-end overflow-hidden pb-10 pt-28 md:pb-14">
+    <Picture
+      src={heroImg}
+      alt="Modern commercial building at dusk representing Civorax Group's construction work"
+      formats={['avif', 'webp']}
+      widths={[640, 1024, 1600, 2400]}
+      sizes="100vw"
+      loading="eager"
+      fetchpriority="high"
+      class="h-full w-full object-cover"
+      pictureAttributes={{ class: 'absolute inset-0 -z-20 h-full w-full' }}
+    />
+    <div aria-hidden="true" class="absolute inset-0 -z-10 bg-gradient-to-b from-void/70 via-void/20 to-void"></div>
+
+    <div aria-hidden="true" class="container-x absolute inset-x-0 top-24 md:top-28">
+      <span class="wordmark block text-center text-[17vw] leading-[0.8] 2xl:text-[16rem]">Civorax</span>
+    </div>
+
+    <div class="container-x grid items-end gap-8 md:grid-cols-12">
+      <div class="md:col-span-7">
+        <p class="eyebrow mb-4">Civorax Group · {SITE.tagline}</p>
+        <h1 class="text-4xl font-semibold leading-[1.05] tracking-tight text-white sm:text-5xl lg:text-6xl">
+          Civorax Group builds the software and structures that move Nepal forward
+        </h1>
+      </div>
+      <div class="flex flex-col gap-5 md:col-span-5 md:items-end md:text-right">
+        <p class="max-w-sm text-sm leading-relaxed text-white/75">
+          Two companies, one standard: <strong class="font-semibold text-white">CivoraX Tech</strong> for web, software, cloud and AI, and <strong class="font-semibold text-white">CivoraX Infra</strong> for design, construction, surveying and interiors.
+        </p>
+        <div class="flex flex-wrap gap-3 md:justify-end">
+          <Button href="/contact">Start a project</Button>
+          <Button href="/companies" variant="ghost">Our companies</Button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ─────────────── 2 · INTRO STATEMENT (light) ─────────────── -->
+  <section class="section theme-light" aria-labelledby="intro-heading">
+    <div class="container-x">
+      <p class="eyebrow mb-6">Who we are</p>
+      <h2 id="intro-heading" class="max-w-6xl text-[clamp(2.25rem,5.2vw,5.5rem)] font-medium leading-[1.04] tracking-tight text-white">
+        We engineer software and buildings <span class="text-muted-2">that last — useful on day one, dependable for decades.</span>
+      </h2>
+      <div class="mt-12 grid items-end gap-8 border-t border-line pt-10 md:mt-16 md:grid-cols-12">
+        <div class="md:col-span-5">
+          <p class="font-display text-[clamp(5rem,12vw,11rem)] font-semibold leading-[0.85] tracking-tighter text-white">30+</p>
+          <p class="mt-3 text-base text-muted">Projects delivered since {SITE.foundingYear}</p>
+        </div>
+        <div class="flex flex-col gap-6 md:col-span-7 md:items-end md:text-right">
+          <div class="flex items-center gap-4">
+            <div class="flex -space-x-3">
+              {COMPANIES.map((c) => (
+                <img src={c.logo} alt={`${c.name} logo`} width="56" height="56" loading="lazy" decoding="async" class="h-14 w-14 rounded-full border-2 border-bone bg-[#fff] object-cover" />
+              ))}
+            </div>
+            <p class="text-base text-muted"><span class="font-semibold text-white">2 companies</span> · 25+ architects, engineers and developers</p>
+          </div>
+          <Button href="/about" variant="ghost">About the group</Button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─────────────── 3 · CIVORAX INFRA (dark) ─────────────── -->
+  <section class="section" aria-labelledby="companies-heading">
+    <div class="container-x">
+      <div class="mb-8 flex items-end justify-between gap-6">
+        <h2 id="companies-heading" class="text-3xl font-medium tracking-tight text-white md:text-5xl">Our companies</h2>
+        <span class="font-display text-sm text-muted-2">01 / 02</span>
+      </div>
+      <div class="grid gap-5 md:grid-cols-12">
+        <div class="overflow-hidden rounded-2xl md:col-span-7">
+          <Image src={IMAGES.tower} alt={infra.imageAlt} widths={[640, 960, 1280]} sizes="(min-width:768px) 58vw, 100vw" class="screen-img transition-transform duration-700 hover:scale-105" />
+        </div>
+        <article class="card flex flex-col justify-between gap-6 p-7 md:col-span-5 md:p-10">
+          <div>
+            <p class="eyebrow mb-3">Company 01 · Infrastructure</p>
+            <h3 class="text-3xl font-medium tracking-tight text-white md:text-4xl">{infra.name}</h3>
+            <p class="mt-2 font-display text-lg italic text-lime">{infra.motto}</p>
+            <p class="mt-4 text-[15px] leading-relaxed text-muted">{infra.description}</p>
+          </div>
+          <ul class="grid grid-cols-2 gap-x-4 gap-y-2 text-sm text-white/80">
+            {infra.services.map((s) => <li class="flex gap-2"><Icon name="check" class="mt-0.5 shrink-0 text-lime" />{s.title}</li>)}
+          </ul>
+          <div class="flex flex-wrap gap-3">
+            <Button href={`/companies/${infra.slug}`}>Explore Infra</Button>
+            <Button href={infra.url} variant="ghost" external>{infra.domain}</Button>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─────────────── 4 · CIVORAX TECH (navy) ─────────────── -->
+  <section class="section theme-navy" aria-label="CivoraX Tech">
+    <div class="container-x">
+      <div class="mb-8 flex items-end justify-between gap-6">
+        <p class="text-3xl font-medium tracking-tight text-white md:text-5xl">Our companies</p>
+        <span class="font-display text-sm text-muted-2">02 / 02</span>
+      </div>
+      <div class="grid gap-5 md:grid-cols-12">
+        <article class="card flex flex-col justify-between gap-6 p-7 md:col-span-5 md:p-10">
+          <div>
+            <p class="eyebrow mb-3">Company 02 · Technology</p>
+            <h3 class="text-3xl font-medium tracking-tight text-white md:text-4xl">{tech.name}</h3>
+            <p class="mt-2 font-display text-lg italic text-lime">{tech.motto}</p>
+            <p class="mt-4 text-[15px] leading-relaxed text-muted">{tech.description}</p>
+          </div>
+          <ul class="grid grid-cols-2 gap-x-4 gap-y-2 text-sm text-white/80">
+            {tech.services.map((s) => <li class="flex gap-2"><Icon name="check" class="mt-0.5 shrink-0 text-lime" />{s.title}</li>)}
+          </ul>
+          <div class="flex flex-wrap gap-3">
+            <Button href={`/companies/${tech.slug}`}>Explore Tech</Button>
+            <Button href={tech.url} variant="ghost" external>{tech.domain}</Button>
+          </div>
+        </article>
+        <div class="overflow-hidden rounded-2xl md:col-span-7">
+          <Image src={IMAGES['pos-dashboard']} alt={tech.imageAlt} widths={[640, 960, 1280]} sizes="(min-width:768px) 58vw, 100vw" class="screen-img transition-transform duration-700 hover:scale-105" />
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─────────────── 5 · WHY CIVORAX (light) ─────────────── -->
+  <section class="section theme-sage" aria-labelledby="why-heading">
+    <div class="container-x grid items-center gap-10 md:grid-cols-12 lg:gap-16">
+      <div class="overflow-hidden rounded-2xl md:col-span-6">
+        <Image src={IMAGES['design-studio']} alt="Civorax Group design team at work in the Itahari office" widths={[640, 960, 1280]} sizes="(min-width:768px) 50vw, 100vw" class="screen-img" />
+      </div>
+      <div class="md:col-span-6">
+        <p class="eyebrow mb-4">Why Civorax Group</p>
+        <h2 id="why-heading" class="text-[clamp(2rem,3.8vw,3.75rem)] font-medium leading-[1.08] tracking-tight text-white">One accountable partner for code and concrete</h2>
+        <p class="mt-6 text-lg leading-relaxed text-muted">
+          A new showroom needs a building and a billing system. A school needs classrooms and a student portal. Under Civorax Group, both are planned together, built by people who talk to each other, and supported by one team after handover.
+        </p>
+        <ul class="mt-8 space-y-4 text-base text-white md:text-lg">
+          <li class="flex gap-3"><Icon name="check" size={20} class="mt-1 shrink-0 text-lime" />Earthquake-resistant design to the Nepal National Building Code</li>
+          <li class="flex gap-3"><Icon name="check" size={20} class="mt-1 shrink-0 text-lime" />Software built for Nepali tax, payments and connectivity</li>
+          <li class="flex gap-3"><Icon name="check" size={20} class="mt-1 shrink-0 text-lime" />Fixed scope, milestone payments and transparent timelines</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─────────────── 6 · HOW WE WORK (dark) ─────────────── -->
+  <section class="section" aria-labelledby="process-heading">
+    <div class="container-x">
+      <div class="flex flex-col justify-between gap-6 md:flex-row md:items-end">
+        <div>
+          <p class="eyebrow mb-4">How we work</p>
+          <h2 id="process-heading" class="max-w-3xl text-[clamp(2rem,3.8vw,3.75rem)] font-medium leading-[1.08] tracking-tight text-white">From first conversation to handover, in three clear steps</h2>
+        </div>
+        <Button href="/contact">Book a consultation</Button>
+      </div>
+      <ol class="mt-12 grid gap-4 md:grid-cols-3">
+        {PROCESS.map((p) => (
+          <li class="card flex min-h-[220px] flex-col justify-between p-8 md:min-h-[clamp(260px,42svh,440px)] md:p-10">
+            <span class="font-display text-[clamp(3rem,5vw,5rem)] font-semibold leading-none text-lime">{p.n}</span>
+            <div>
+              <h3 class="text-2xl font-medium text-white md:text-3xl">{p.title}</h3>
+              <p class="mt-3 text-[15px] leading-relaxed text-muted">{p.text}</p>
+            </div>
+          </li>
+        ))}
+      </ol>
+    </div>
+  </section>
+
+  <!-- ─────────────── 7 · PROJECTS (light) ─────────────── -->
+  <section class="section theme-light" aria-labelledby="projects-heading">
+    <div class="container-x">
+      <h2 id="projects-heading" class="mx-auto max-w-5xl text-center text-[clamp(1.9rem,3.8vw,3.75rem)] font-medium leading-snug tracking-tight text-white">
+        We turn ideas
+        <span aria-hidden="true" class="mx-1 inline-block h-9 w-20 overflow-hidden rounded-full align-middle md:h-14 md:w-32"><Image src={IMAGES['pos-dashboard']} alt="" width={256} class="h-full w-full object-cover" /></span>
+        into software and buildings that
+        <span aria-hidden="true" class="mx-1 inline-block h-9 w-20 overflow-hidden rounded-full align-middle md:h-14 md:w-32"><Image src={IMAGES.tower} alt="" width={256} class="h-full w-full object-cover" /></span>
+        serve their context
+      </h2>
+
+      <ul class="mt-12 grid gap-5 md:grid-cols-3">
+        {PROJECTS.map((p, i) => (
+          <li>
+            <a href={`/projects/${p.slug}`} class="group block">
+              <div class:list={['overflow-hidden rounded-2xl', i === 1 ? 'md:-translate-y-6' : '']}>
+                <Image src={IMAGES[p.image]} alt={p.imageAlt} widths={[480, 720, 960]} sizes="(min-width:768px) 32vw, 100vw" class="aspect-[4/3] w-full object-cover transition-transform duration-700 group-hover:scale-105 md:aspect-auto md:h-[clamp(220px,38svh,440px)]" />
+              </div>
+              <div class="mt-4 flex items-start justify-between gap-4">
+                <div>
+                  <p class="text-xs text-muted-2">{p.category} · {p.location}</p>
+                  <h3 class="mt-1 text-lg font-medium text-white group-hover:text-lime md:text-xl">{p.title}</h3>
+                </div>
+                <span class="grid h-9 w-9 shrink-0 place-items-center rounded-full border border-line text-white transition group-hover:rotate-45 group-hover:border-lime"><Icon name="arrow-up-right" size={14} /></span>
+              </div>
+            </a>
+          </li>
+        ))}
+      </ul>
+      <div class="mt-8 text-center"><Button href="/projects" variant="ghost">View all projects</Button></div>
+    </div>
+  </section>
+
+  <!-- ─────────────── 8 · SERVICES INDEX (navy) ─────────────── -->
+  <section class="section theme-moss" aria-labelledby="services-heading">
+    <div class="container-x grid gap-10 md:grid-cols-12 lg:gap-16">
+      <div class="overflow-hidden rounded-2xl md:col-span-6">
+        <Image src={IMAGES['pos-dashboard']} alt="Software built by CivoraX Tech" widths={[640, 960, 1280]} sizes="(min-width:768px) 50vw, 100vw" class="screen-img" />
+      </div>
+      <div class="flex flex-col justify-center md:col-span-6">
+        <p class="eyebrow mb-4">What we do</p>
+        <h2 id="services-heading" class="text-[clamp(2rem,3.8vw,3.75rem)] font-medium leading-[1.08] tracking-tight text-white">Services across the group</h2>
+        <ul class="mt-8 border-t border-line">
+          {SERVICES_INDEX.map((s) => (
+            <li>
+              <a href={`/companies/${s.company}`} class="group flex items-center justify-between gap-4 border-b border-line py-4 lg:py-5">
+                <span class="flex items-center gap-5">
+                  <span class="grid h-9 w-9 place-items-center rounded-full border border-line text-white/70 transition group-hover:rotate-45 group-hover:border-lime group-hover:text-lime"><Icon name="arrow-up-right" size={14} /></span>
+                  <span class="text-base text-white group-hover:text-lime md:text-xl">{s.title}</span>
+                </span>
+                <span class="font-display text-sm text-muted-2">{s.n}</span>
+              </a>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─────────────── 9 · NETWORK GLOBE + STATS (dark) ─────────────── -->
+  <NetworkGlobe />
+
+  <!-- ─────────────── 10 · FAQ + CONSULTATION (light) ─────────────── -->
+  <section class="section theme-light" aria-labelledby="faq-heading">
+    <div class="container-x">
+      <div class="grid gap-10 md:grid-cols-12">
+        <div class="md:col-span-4">
+          <p class="eyebrow mb-4">FAQ</p>
+          <h2 id="faq-heading" class="text-[clamp(2rem,3.4vw,3.25rem)] font-medium leading-[1.08] tracking-tight text-white">About Civorax Group</h2>
+        </div>
+        <div class="md:col-span-8">
+          {FAQ.map((f) => (
+            <details class="group border-b border-line py-3">
+              <summary class="flex cursor-pointer list-none items-center justify-between gap-6 text-white [&::-webkit-details-marker]:hidden">
+                <h3 class="font-display text-base font-medium md:text-lg">{f.q}</h3>
+                <span class="grid h-8 w-8 shrink-0 place-items-center rounded-full border border-line text-lime transition group-open:rotate-45">+</span>
+              </summary>
+              <p class="mt-3 max-w-2xl text-[15px] leading-relaxed text-muted">{f.a}</p>
+            </details>
+          ))}
+        </div>
+      </div>
+
+      <div class="relative mt-8 grid items-center gap-6 overflow-hidden rounded-2xl bg-[#0b1626] p-7 text-[#fff] md:grid-cols-12 md:px-10 md:py-8">
+        <div aria-hidden="true" class="pointer-events-none absolute -bottom-24 -left-24 h-72 w-72 rounded-full bg-lime/20 blur-3xl"></div>
+        <div class="relative md:col-span-7">
+          <h2 id="cta-heading" class="text-2xl font-medium tracking-tight md:text-3xl">Schedule a free consultation</h2>
+          <p class="mt-2 max-w-lg text-sm leading-relaxed text-[#a1a1aa]">Tell us about your building or software project. We reply within one working day with next steps and an honest estimate.</p>
+        </div>
+        <div class="relative flex flex-wrap gap-3 md:col-span-5 md:justify-end">
+          <Button href="/contact">Contact us</Button>
+          <a href={SITE.phoneHref} class="btn border border-[#ffffff26] bg-[#ffffff0f] !text-[#fff]">{SITE.phoneDisplay}<span class="arrow"><Icon name="phone" size={14} /></span></a>
+        </div>
+      </div>
+    </div>
+  </section>
+</Base>

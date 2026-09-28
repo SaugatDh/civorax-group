@@ -1,0 +1,55 @@
+---
+import { Image } from 'astro:assets';
+import Base from '../../layouts/Base.astro';
+import PageHero from '../../components/PageHero.astro';
+import Icon from '../../components/Icon.astro';
+import { SITE, PROJECTS, COMPANIES } from '../../data/site';
+import { IMAGES } from '../../data/images';
+import { breadcrumbs } from '../../data/schema';
+
+const title = 'Projects & Case Studies | Civorax Group Nepal';
+const description = 'Buildings and software delivered by Civorax Group companies across Nepal — commercial towers, homes, and multi-branch POS and ERP systems.';
+const crumbs = [{ name: 'Projects', path: '/projects' }];
+const companyName = (slug: string) => COMPANIES.find((c) => c.slug === slug)!.name;
+---
+
+<Base
+  title={title}
+  description={description}
+  schema={[
+    breadcrumbs(crumbs),
+    {
+      '@type': 'CollectionPage',
+      name: title,
+      url: `${SITE.url}/projects`,
+      hasPart: PROJECTS.map((p) => ({ '@id': `${SITE.url}/projects/${p.slug}#project` })),
+    },
+  ]}
+>
+  <PageHero eyebrow="Our work" title="Projects" lead="A selection of buildings and software systems delivered by CivoraX Infra and CivoraX Tech." crumbs={crumbs} image="tower" imageAlt="Commercial tower delivered by CivoraX Infra" />
+
+  <section class="section theme-sage">
+    <div class="container-x">
+      <div class="mb-10 flex flex-col justify-between gap-4 md:flex-row md:items-end">
+        <p class="text-[clamp(2rem,3.8vw,3.75rem)] font-display font-medium leading-[1.06] tracking-tight text-white">Selected work</p>
+        <p class="max-w-md text-base text-muted lg:text-lg">Buildings, interiors and software delivered by the two Civorax Group companies.</p>
+      </div>
+      <ul class="grid gap-x-5 gap-y-12 md:grid-cols-2 lg:grid-cols-3">
+        {PROJECTS.map((p) => (
+          <li>
+            <a href={`/projects/${p.slug}`} class="group block">
+              <div class="overflow-hidden rounded-2xl">
+                <Image src={IMAGES[p.image]} alt={p.imageAlt} widths={[480, 720, 960]} sizes="(min-width:1024px) 32vw, (min-width:768px) 50vw, 100vw" class="aspect-[4/3] w-full object-cover transition-transform duration-700 group-hover:scale-105 lg:aspect-auto lg:h-[clamp(240px,40svh,480px)]" />
+              </div>
+              <p class="mt-5 text-xs uppercase tracking-[0.08em] text-muted-2">{companyName(p.company)} · {p.location} · {p.year}</p>
+              <h2 class="mt-2 flex items-center justify-between gap-4 text-2xl font-medium text-white group-hover:text-lime">
+                {p.title}<Icon name="arrow-up-right" size={20} class="shrink-0" />
+              </h2>
+              <p class="mt-2 text-[15px] leading-relaxed text-muted">{p.summary}</p>
+            </a>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+</Base>

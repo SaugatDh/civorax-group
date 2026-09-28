@@ -1,0 +1,51 @@
+---
+import { Image } from 'astro:assets';
+import Base from '../../layouts/Base.astro';
+import PageHero from '../../components/PageHero.astro';
+import Button from '../../components/Button.astro';
+import { SITE, COMPANIES } from '../../data/site';
+import { IMAGES } from '../../data/images';
+import { breadcrumbs, companyId } from '../../data/schema';
+
+const title = 'Our Companies: CivoraX Tech & CivoraX Infra | Civorax Group';
+const description = 'Civorax Group owns CivoraX Tech (POS, ERP and custom software) and CivoraX Infra (architecture, structural engineering and construction) in Nepal.';
+const crumbs = [{ name: 'Companies', path: '/companies' }];
+---
+
+<Base
+  title={title}
+  description={description}
+  schema={[
+    breadcrumbs(crumbs),
+    {
+      '@type': 'ItemList',
+      name: 'Civorax Group companies',
+      itemListElement: COMPANIES.map((c, i) => ({ '@type': 'ListItem', position: i + 1, url: `${SITE.url}/companies/${c.slug}`, item: { '@id': companyId(c) } })),
+    },
+  ]}
+>
+  <PageHero eyebrow="Our companies" title="Two companies. One standard." lead="Each company runs its own website and team, and shares the group’s leadership, standards and accountability." crumbs={crumbs} image="pos-dashboard" imageAlt="CivoraX Tech software and CivoraX Infra buildings" />
+
+  {COMPANIES.map((c, i) => (
+    <section class:list={['section', i % 2 ? 'theme-moss' : 'theme-sage']} aria-label={c.name}>
+      <div class="container-x">
+        <article class="card grid overflow-hidden md:grid-cols-2">
+          <div class:list={['flex flex-col justify-center p-8 md:p-12 lg:p-16', i % 2 ? 'md:order-2' : '']}>
+            <p class="eyebrow mb-4">Company 0{i + 1} · {c.domain}</p>
+            <h2 class="text-[clamp(2.25rem,4.2vw,4.25rem)] font-medium leading-[1.04] tracking-tight text-white">{c.name}</h2>
+            <p class="mt-3 font-display text-xl italic text-lime">{c.motto}</p>
+            <p class="mt-5 text-base leading-relaxed text-muted lg:text-lg">{c.description}</p>
+            <ul class="mt-6 grid grid-cols-2 gap-x-4 gap-y-2 text-sm text-white/85">
+              {c.services.map((s) => <li class="flex gap-2"><span class="text-lime">•</span>{s.title}</li>)}
+            </ul>
+            <div class="mt-8 flex flex-wrap gap-3">
+              <Button href={`/companies/${c.slug}`}>About {c.name}</Button>
+              <Button href={c.url} variant="ghost" external>Visit {c.domain}</Button>
+            </div>
+          </div>
+          <Image src={IMAGES[c.image]} alt={c.imageAlt} widths={[640, 960, 1280]} sizes="(min-width:768px) 50vw, 100vw" class="screen-img h-full" />
+        </article>
+      </div>
+    </section>
+  ))}
+</Base>

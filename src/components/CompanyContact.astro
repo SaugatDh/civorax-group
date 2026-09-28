@@ -1,0 +1,56 @@
+---
+// Business-card style contact block for one company (phones, email, website, address, motto).
+import Icon from './Icon.astro';
+import { SITE, type Company } from '../data/site';
+
+interface Props { company: Company; compact?: boolean }
+const { company, compact = false } = Astro.props;
+const address = `${SITE.address.street}, ${SITE.address.district}, ${SITE.address.region}, ${SITE.address.countryName}`;
+---
+
+<address class="card not-italic grid gap-8 overflow-hidden p-7 md:p-10 lg:grid-cols-12">
+  <div class="lg:col-span-5">
+    <div class="flex items-center gap-4">
+      <img src={company.logo} alt={`${company.legalName} logo`} width="56" height="56" loading="lazy" decoding="async" class="h-14 w-14 rounded-xl bg-[#fff] object-cover" />
+      <div>
+        <p class="font-display text-lg font-semibold uppercase tracking-wide text-white">{company.legalName}</p>
+        <p class="text-xs text-muted">A Civorax Group company</p>
+      </div>
+    </div>
+    <p class="mt-5 font-display text-xl italic leading-snug text-lime">{company.motto}</p>
+    {!compact && <p class="mt-2 text-sm italic text-white/60">“{SITE.tagline}”</p>}
+  </div>
+
+  <ul class="grid gap-4 text-sm sm:grid-cols-2 lg:col-span-7">
+    <li class="flex gap-3">
+      <span class="grid h-9 w-9 shrink-0 place-items-center rounded-full bg-lime text-ink"><Icon name="phone" size={15} /></span>
+      <span>
+        <span class="block text-xs uppercase tracking-[0.08em] text-muted">Phone</span>
+        {company.phones.map((p, i) => (
+          <>{i > 0 && <span class="text-white/40">, </span>}<a class="text-white hover:text-lime" href={`tel:${p.e164}`}>{p.display}</a></>
+        ))}
+      </span>
+    </li>
+    <li class="flex gap-3">
+      <span class="grid h-9 w-9 shrink-0 place-items-center rounded-full bg-lime text-ink"><Icon name="mail" size={15} /></span>
+      <span>
+        <span class="block text-xs uppercase tracking-[0.08em] text-muted">Email</span>
+        <a class="text-white hover:text-lime" href={`mailto:${company.email}`}>{company.email}</a>
+      </span>
+    </li>
+    <li class="flex gap-3">
+      <span class="grid h-9 w-9 shrink-0 place-items-center rounded-full bg-lime text-ink"><Icon name="web" size={15} /></span>
+      <span>
+        <span class="block text-xs uppercase tracking-[0.08em] text-muted">Website</span>
+        <a class="text-white hover:text-lime" href={company.url} rel="noopener">{company.domain}</a>
+      </span>
+    </li>
+    <li class="flex gap-3">
+      <span class="grid h-9 w-9 shrink-0 place-items-center rounded-full bg-lime text-ink"><Icon name="pin" size={15} /></span>
+      <span>
+        <span class="block text-xs uppercase tracking-[0.08em] text-muted">Office</span>
+        <span class="text-white">{address}</span>
+      </span>
+    </li>
+  </ul>
+</address>

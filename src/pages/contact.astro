@@ -1,0 +1,92 @@
+---
+import Base from '../layouts/Base.astro';
+import PageHero from '../components/PageHero.astro';
+import Icon from '../components/Icon.astro';
+import CompanyContact from '../components/CompanyContact.astro';
+import { SITE, COMPANIES } from '../data/site';
+import { breadcrumbs, LOCAL_ID } from '../data/schema';
+
+const title = 'Contact Civorax Group | Itahari, Nepal';
+const description = `Contact Civorax Group in Itahari, Koshi Province. Call ${SITE.phoneDisplay} or email ${SITE.email} for software, architecture and construction projects.`;
+const crumbs = [{ name: 'Contact', path: '/contact' }];
+
+// Set PUBLIC_CONTACT_ENDPOINT in .env to the civorax-api inquiry route (or any form service).
+const endpoint = import.meta.env.PUBLIC_CONTACT_ENDPOINT as string | undefined;
+const mapsUrl = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(`${SITE.name}, ${SITE.address.city}, ${SITE.address.countryName}`)}`;
+
+const channels = [
+  { icon: 'phone', label: 'Call', value: SITE.phoneDisplay, href: SITE.phoneHref },
+  { icon: 'whatsapp', label: 'WhatsApp', value: SITE.phoneDisplay, href: SITE.whatsapp },
+  { icon: 'mail', label: 'Email', value: SITE.email, href: `mailto:${SITE.email}` },
+  { icon: 'pin', label: 'Visit', value: `${SITE.address.street}, ${SITE.address.district}`, href: mapsUrl },
+] as const;
+---
+
+<Base title={title} description={description} schema={[breadcrumbs(crumbs), { '@type': 'ContactPage', url: `${SITE.url}/contact`, name: title, about: { '@id': LOCAL_ID } }]}>
+  <PageHero eyebrow="Contact" title="Contact Civorax Group" lead="Tell us about your project. We reply within one working day." crumbs={crumbs} image="tower" imageAlt="Commercial building delivered by Civorax Group" />
+
+  <section class="section theme-moss">
+    <div class="container-x grid gap-12 md:grid-cols-12">
+      <div class="md:col-span-5">
+        <p class="eyebrow mb-4">Get in touch</p>
+        <h2 class="mb-8 text-[clamp(2rem,3.6vw,3.5rem)] font-medium leading-[1.06] tracking-tight text-white">Let’s build what comes next</h2>
+        <ul class="space-y-3">
+          {channels.map((c) => (
+            <li>
+              <a href={c.href} class="card group flex items-center gap-4 p-5 hover:border-lime/50" {...(c.icon === 'pin' || c.icon === 'whatsapp' ? { target: '_blank', rel: 'noopener' } : {})}>
+                <span class="grid h-11 w-11 shrink-0 place-items-center rounded-full bg-lime text-ink"><Icon name={c.icon} size={18} /></span>
+                <span>
+                  <span class="block text-xs uppercase tracking-[0.08em] text-muted">{c.label}</span>
+                  <span class="block text-lg text-white group-hover:text-lime">{c.value}</span>
+                </span>
+              </a>
+            </li>
+          ))}
+        </ul>
+        <div class="card mt-3 p-5 text-sm text-muted">
+          <p class="flex items-center gap-2 text-white"><Icon name="clock" class="text-lime" /> Office hours</p>
+          <p class="mt-1">{SITE.hours.display}</p>
+        </div>
+      </div>
+
+      <div class="md:col-span-7">
+        <form class="card grid gap-4 p-7 md:p-8" method="post" action={endpoint || `mailto:${SITE.email}`} enctype={endpoint ? 'application/x-www-form-urlencoded' : 'text/plain'}>
+          <h2 class="text-2xl font-medium text-white lg:text-3xl">Send us a message</h2>
+          <div class="grid gap-5 sm:grid-cols-2">
+            <label class="grid gap-2 text-sm text-white/80">Full name
+              <input required name="name" autocomplete="name" class="rounded-full border border-line-strong bg-black/25 px-5 py-3 text-white placeholder:text-muted-2 focus:border-lime focus:outline-none" placeholder="Your name" />
+            </label>
+            <label class="grid gap-2 text-sm text-white/80">Phone
+              <input required name="phone" type="tel" autocomplete="tel" class="rounded-full border border-line-strong bg-black/25 px-5 py-3 text-white placeholder:text-muted-2 focus:border-lime focus:outline-none" placeholder="98XXXXXXXX" />
+            </label>
+          </div>
+          <label class="grid gap-2 text-sm text-white/80">Email
+            <input name="email" type="email" autocomplete="email" class="rounded-full border border-line-strong bg-black/25 px-5 py-3 text-white placeholder:text-muted-2 focus:border-lime focus:outline-none" placeholder="you@company.com" />
+          </label>
+          <label class="grid gap-2 text-sm text-white/80">I’m interested in
+            <select name="interest" class="rounded-full border border-line-strong bg-black/25 px-5 py-3 text-white focus:border-lime focus:outline-none">
+              <option>Software — web, apps, cloud &amp; AI (CivoraX Tech)</option>
+              <option>Design, construction, surveying &amp; interiors (CivoraX Infra)</option>
+              <option>Both</option>
+              <option>Careers / other</option>
+            </select>
+          </label>
+          <label class="grid gap-2 text-sm text-white/80">Project details
+            <textarea required name="message" rows="3" class="rounded-2xl border border-line-strong bg-black/25 px-5 py-4 text-white placeholder:text-muted-2 focus:border-lime focus:outline-none" placeholder="Location, size, budget, timeline…"></textarea>
+          </label>
+          <button type="submit" class="btn btn-primary w-fit">Send message<span class="arrow"><Icon name="arrow-up-right" size={14} /></span></button>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <section class="section theme-sage" aria-labelledby="companies-contact-heading">
+    <div class="container-x">
+      <p class="eyebrow mb-3">Contact a company directly</p>
+      <h2 id="companies-contact-heading" class="text-3xl font-medium tracking-tight text-white md:text-4xl">Our companies</h2>
+      <div class="mt-8 space-y-5">
+        {COMPANIES.map((c) => <CompanyContact company={c} compact />)}
+      </div>
+    </div>
+  </section>
+</Base>

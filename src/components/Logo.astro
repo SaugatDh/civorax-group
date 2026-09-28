@@ -1,0 +1,14 @@
+---
+// LIVINOR-style wordmark: ✕ mark + uppercase name. The raster logo (navy on white) is used in JSON-LD.
+// TODO: swap for an official white/lime SVG logo when available.
+interface Props { class?: string }
+const { class: className = '' } = Astro.props;
+---
+
+<a href="/" class:list={['inline-flex items-center gap-2.5 font-display text-white', className]} aria-label="Civorax Group — home">
+  <svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true">
+    <path d="M4 4l16 16M20 4L4 20" stroke="#84CC16" stroke-width="3" stroke-linecap="round" />
+    <path d="M12 2v4M12 18v4M2 12h4M18 12h4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" />
+  </svg>
+  <span class="text-[15px] font-bold uppercase leading-none tracking-[0.06em]">Civorax<span class="ml-1.5 font-medium text-white/60">Group</span></span>
+</a>
