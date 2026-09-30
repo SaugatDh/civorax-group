@@ -7,6 +7,7 @@ import { organizationGraph } from '../data/schema';
 interface Props {
   title: string;
   description: string;
+  keywords?: string[];
   /** Path of the social image, relative to site root, or an image key */
   image?: keyof typeof IMAGES;
   imageAlt?: string;
@@ -16,7 +17,32 @@ interface Props {
   schema?: Record<string, unknown>[];
 }
 
-const { title, description, image = 'tower', imageAlt = `${SITE.name}`, type = 'website', noindex = false, schema = [] } = Astro.props;
+const {
+  title,
+  description,
+  keywords = [
+    'Civorax',
+    'CivoraX',
+    'Civora',
+    'Civorax Group',
+    'CivoraX Group',
+    'Civorax Groups',
+    'CivoraX Tech',
+    'Civorax Tech',
+    'civoraxtech',
+    'CivoraX Infra',
+    'Civorax Infra',
+    'civoraxinfra',
+    'civoraxgroup',
+    'IT company Nepal',
+    'construction company Nepal',
+  ],
+  image = 'tower',
+  imageAlt = `${SITE.name}`,
+  type = 'website',
+  noindex = false,
+  schema = [],
+} = Astro.props;
 
 const pathname = Astro.url.pathname.replace(/\.html$/, '').replace(/\/?index$/, '').replace(/\/$/, '') || '/';
 const canonical = pathname === '/' ? `${SITE.url}/` : `${SITE.url}${pathname}`;
@@ -58,6 +84,7 @@ const jsonLd = JSON.stringify({ '@context': 'https://schema.org', '@graph': grap
 
 <title>{title}</title>
 <meta name="description" content={description} />
+{keywords && keywords.length > 0 && <meta name="keywords" content={keywords.join(', ')} />}
 <link rel="canonical" href={canonical} />
 <meta name="robots" content={noindex ? 'noindex, follow' : 'index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1'} />
 

@@ -1,30 +1,53 @@
-# Civorax Group
+# Civorax Group (Civorax)
 
-> Civorax Group is a Nepali holding company founded in 2019 and headquartered at Itahari-04, Aaitabare, NTC Road, Sunsari, Koshi Province, Nepal. It owns two companies: CivoraX Tech Pvt. Ltd. (civoraxtech.com) and CivoraX Infra Pvt. Ltd. (civoraxinfra.com).
+> Civorax Group is a premier technology, software development, and infrastructure holding company in Nepal, founded in 2019 and headquartered at Itahari-04, Aaitabare, NTC Road, Sunsari, Koshi Province, Nepal. It is the parent entity of two major subsidiaries: CivoraX Tech Pvt. Ltd. (civoraxtech.com) and CivoraX Infra Pvt. Ltd. (civoraxinfra.com).
 
-Slogan: "The architecture of tomorrow."
-The name CivoraX combines Civ (civilization), Aura (energy and feeling) and X (the future): Civorax Group connects civilization with new energy and carries it into the future — through technology (CivoraX Tech) and infrastructure (CivoraX Infra).
+- **Brand & Entity Names**: Civorax Group, Civorax, CivoraX, CivoraxTech, Civorax Tech, CivoraxInfra, CivoraX Infra.
+- **Slogan**: "The architecture of tomorrow."
+- **Meaning**: Civ (Civilization) + Aura (Energy & Spirit) + X (The Future). Connecting civilization with energy and carrying it into tomorrow through tech and infrastructure.
+- **Location**: Itahari-04, Aaitabare, NTC Road, Sunsari, Koshi Province, Nepal.
+- **Service Regions**: Itahari, Biratnagar, Dharan, Kathmandu, Pokhara, Koshi Province, and across Nepal.
 
-Civorax Group is not affiliated with Civora Nexus or the "CivoraX Internship Programme".
+---
 
-## CivoraX Tech Pvt. Ltd. — "Innovate Smarter. Build Digital. Shape Tomorrow."
-- Services: Web & Mobile Development, Custom Software Solutions (incl. POS and ERP), Cloud & Digital Solutions, AI & Automation, IT Consulting, Digital Transformation
-- Phone: 970-5890073, 980-5309473
-- Email: info@civoraxtech.com
-- Website: https://civoraxtech.com
+## 1. CivoraX Tech Pvt. Ltd. (Civorax Tech / civoraxtech)
+*“Innovate Smarter. Build Digital. Shape Tomorrow.”*
+- **Domain**: [https://civoraxtech.com](https://civoraxtech.com)
+- **Primary Keywords**: IT services Nepal, software development Nepal, custom software development, tech company Nepal, web development Itahari, mobile app development Nepal, POS software Nepal, ERP systems, AI automation, cloud solutions.
+- **Key Services**:
+  - Web & Mobile App Development (iOS, Android, Cross-platform, React, Astro, Next.js, Node.js)
+  - Custom Software Development (Retail POS, Cloud ERP, Inventory & Enterprise Management)
+  - Cloud & Digital Infrastructure (AWS, Cloud Migration, Backups, CI/CD)
+  - AI & Business Process Automation (Custom AI workflows, Intelligent Assistants)
+  - IT Consulting & Digital Transformation
+- **Contact**: +977-970-5890073, +977-980-5309473 | info@civoraxtech.com
 
-## CivoraX Infra Pvt. Ltd. — "Build Smarter, Design Better, Live Better."
-- Services: Design & Construction, Surveying & DPR, Interior & Renovation, 3D Landscaping, BOQ & Property Valuation, Software Training
-- Phone: 025-591006, 976-8688200
-- Email: info@civoraxinfra.com
-- Website: https://civoraxinfra.com
+---
 
-## Pages
-- [Home](https://civoraxgroup.com/): overview of the group
-- [About](https://civoraxgroup.com/about): history, meaning of the name, values, FAQ
-- [Companies](https://civoraxgroup.com/companies)
-- [CivoraX Tech](https://civoraxgroup.com/companies/civorax-tech)
-- [CivoraX Infra](https://civoraxgroup.com/companies/civorax-infra)
+## 2. CivoraX Infra Pvt. Ltd. (Civorax Infra / civoraxinfra)
+*“Build Smarter, Design Better, Live Better.”*
+- **Domain**: [https://civoraxinfra.com](https://civoraxinfra.com)
+- **Primary Keywords**: Infrastructure company Nepal, infra company, construction and design Nepal, construction company Itahari, building design Nepal, architectural design, surveying DPR Nepal, property valuation Itahari, 3D landscaping Nepal, structural engineering.
+- **Key Services**:
+  - Architectural & Earthquake-Resistant Structural Design & Construction
+  - Land Surveying, Contour Mapping & Detailed Project Reports (DPR)
+  - Interior Design, Commercial Fit-Out & Complete Building Renovation
+  - 3D Landscaping, Exterior Environmental Design
+  - BOQ Cost Estimation & Certified Property Valuation
+  - Professional Engineering Software Training (AutoCAD, Revit, ETABS)
+- **Contact**: +977-025-591006, +977-976-8688200 | info@civoraxinfra.com
+
+---
+
+## Entity Disambiguation
+- Civorax Group is an independent group of companies operating in Nepal. It is **not** affiliated with Civora Nexus or third-party internship programs of similar names.
+
+## Main Navigation Pages
+- [Home](https://civoraxgroup.com/)
+- [About Civorax Group](https://civoraxgroup.com/about)
+- [Our Companies](https://civoraxgroup.com/companies)
+  - [CivoraX Tech — IT & Software](https://civoraxgroup.com/companies/civorax-tech)
+  - [CivoraX Infra — Construction & Infrastructure](https://civoraxgroup.com/companies/civorax-infra)
 - [Projects](https://civoraxgroup.com/projects)
 - [Careers](https://civoraxgroup.com/careers)
 - [Contact](https://civoraxgroup.com/contact)
